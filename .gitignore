@@ -132,7 +132,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+py-robot/utils/
 lib64/
 parts/
 sdist/
