@@ -6,7 +6,7 @@ p5=Pin(5,Pin.OUT)
  
 w=network.WLAN(network.STA_IF)
 w.active(True)
-#w.connect("meican","60cb7b45d61e21118daf59a7f6")
+#w.connect("mabc","asdf12345")
 connected = False 
 while connected is False:
     if w.isconnected():
