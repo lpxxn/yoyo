@@ -6,6 +6,7 @@ from tools import StringTool
 
 class WOL():
     def __init__(self, IP, MAC_ADDRESS):
+        print("IP: ")
         self.IP = IP
         self.MAC_ADDRESS = MAC_ADDRESS
         self.SO_BROADCAST = 32
