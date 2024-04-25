@@ -11,7 +11,7 @@
 *.dll
 *.so
 *.dylib
-
+my-robot
 # Test binary, built with `go test -c`
 *.test
 
@@ -133,6 +133,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!py-robot/lib
 lib64/
 parts/
 sdist/
@@ -143,7 +144,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
+myenv
+my_mc.py
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
