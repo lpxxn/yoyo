@@ -27,9 +27,9 @@ class ESP32_BLE():
         self.timer1.init(period=100, mode=Timer.PERIODIC, callback=lambda t: self.led.value(not self.led.value()))
 
     def register(self):
-        service_uuid = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E'
-        reader_uuid = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E'
-        sender_uuid = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E'
+        service_uuid = 'AE25A5C1-4601-143C-12BB-8BC45A18749C'
+        reader_uuid = 'AE25A5C2-4601-143C-12BB-8BC45A18749C'
+        sender_uuid = 'AE25A5C3-4601-143C-12BB-8BC45A18749C'
 
         services = (
             (
@@ -45,6 +45,7 @@ class ESP32_BLE():
 
     def advertiser(self):
         name = bytes(self.name, 'UTF-8')
+        #adv_data = b'\x02\x01\x02' + bytearray((len(name) + 1, 0x09)) + name
         adv_data = b'\x02\x01\x02' + bytearray((len(name) + 1, 0x09)) + name
         self.ble.gap_advertise(100, adv_data)
 
@@ -98,15 +99,9 @@ def wifi_connect(ssid,pwd):
 
 if __name__ == "__main__":
     try:
-        with open('wifi_config','r+') as f: #尝试打开wifi_config文件
-            config = json.loads(f.read())   #获取wifi_config的信息
-        wifi_connect_ok=wifi_connect(config['ssid'],config['password']) #进行WiFi连接
-        if wifi_connect_ok:
-            wifi_connect_flag=1
-        else:
-            ble = ESP32_BLE("ESP32")  #如果连接失败则进入蓝牙配网模式
+        ble = ESP32_BLE("ESP32Hi")  #如果连接失败则进入蓝牙配网模式
     except OSError:
-        ble = ESP32_BLE("ESP32")  #如果查找不到文件则进入蓝牙配网模式
+        ble = ESP32_BLE("ESP32Hi")  #如果查找不到文件则进入蓝牙配网模式
 
     while True:
         # if wifi_connect_ok or ble.ok: #如果WiFi已连接，进行xxxxx
