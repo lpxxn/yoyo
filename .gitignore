@@ -152,7 +152,8 @@ my_env.py
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
-
+private.pem.key
+cert.pem.cert
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt

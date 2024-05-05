@@ -15,8 +15,7 @@ wifi_password = "WIRELESS_PASSWORD"
 aws_endpoint = b'AWS_ENDPOINT.amazonaws.com'
 
 #If you followed the blog, these names are already set.
-thing_name = "BlogThing"
-client_id = "BlogClient"
+client_id = "27D8D901-C95F-43BD-9124-C6CD2B06C369"
 private_key = "private.pem.key"
 private_cert = "cert.pem.crt"
 
@@ -28,8 +27,8 @@ with open(private_cert, 'r') as f:
 
 #These are the topics we will subscribe to. We will publish updates to /update.
 #We will subscribe to the /update/delta topic to look for changes in the device shadow.
-topic_pub = "$aws/things/" + thing_name + "/shadow/update"
-topic_sub = "$aws/things/" + thing_name + "/shadow/update/delta"
+topic_pub = "$aws/things/" + client_id + "/shadow/update"
+topic_sub = "$aws/things/" + client_id + "/shadow/update/delta"
 ssl_params = {"key":key, "cert":cert, "server_side":False}
 
 #Define pins for LED and light sensor. In this example we are using a FeatherS2.
