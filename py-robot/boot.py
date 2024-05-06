@@ -2,10 +2,13 @@
 from lib import storage
 from lib import wifi_op
 from lib import wol_op
+from lib import mqtt
 
+import os
 import urequests
 import json
 import utime
+import ujson
 
 ssid_str = "SSID"
 pwd_str = "PASSWORD"
@@ -35,4 +38,46 @@ print(res)
 print(res.content)
 jsonresults = json.loads(res.content)
 print(jsonresults)
-utime.sleep(5)
+# utime.sleep(5)
+
+info = os.uname()
+
+# We use our helper function to connect to AWS IoT Core.
+# The callback function mqtt_subscribe is what will be called if we
+# get a new message on topic_sub.
+try:
+    mqtt = mqtt.mqtt_connect()
+    mqtt.set_callback(mqtt.mqtt_subscribe)
+    mqtt.subscribe(mqtt.topic_sub)
+except:
+    print("Unable to connect to MQTT.")
+
+while True:
+    # Check for messages.
+    try:
+        mqtt.check_msg()
+    except:
+        print("Unable to check for messages.")
+
+    mesg = ujson.dumps({
+        "state": {
+            "reported": {
+                "device": {
+                    "client": mqtt.client_id,
+                    "uptime": time.ticks_ms(),
+                    "hardware": info[0],
+                    "firmware": info[2]
+                }
+            }
+        }
+    })
+
+    # Using the message above, the device shadow is updated.
+    try:
+        mqtt.mqtt_publish(client=mqtt, message=mesg)
+    except:
+        print("Unable to publish message.")
+
+    # Wait for 10 seconds before checking for messages and publishing a new update.
+    print("Sleep for 10 seconds")
+    time.sleep(10)
