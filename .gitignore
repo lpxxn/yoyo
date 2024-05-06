@@ -154,6 +154,8 @@ my_env.py
 *.spec
 private.pem.key
 cert.pem.cert
+*.pem.*
+*.pem
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
