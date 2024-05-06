@@ -16,24 +16,23 @@ pwd = storage.get(pwd_str)
 print(pwd)
 mac_addr = storage.get(mac_addr_str)
 print(mac_addr)
-while True:
-    wifi = wifi_op.WIFI
-    wifi.SSID = ssid
-    wifi.PASSWORD = pwd
-    if wifi.WLAN == None:
-        print("No wifi found")
-        wifi_op.connectWiFi()
-        if wifi.WLAN.isconnected() == True:
-            print("WLAN is connected")
-            wol = wol_op.WOL(wifi.IP, mac_addr)
-            wol.do()
-        else:
-            print("WLAN is not connected")
+wifi = wifi_op.WIFI
+wifi.SSID = ssid
+wifi.PASSWORD = pwd
 
-    res = urequests.get("http://192.168.10.39:9087/ping", timeout=3)
-    print(res)
-    print(res.content)
-    jsonresults = json.loads(res.content)
-    print(jsonresults)
-    utime.sleep(5)
+while wifi.WLAN == None:
+    print("No wifi found")
+    wifi_op.connectWiFi()
+    if wifi.WLAN.isconnected() == True:
+        print("WLAN is connected")
+        wol = wol_op.WOL(wifi.IP, mac_addr)
+        wol.do()
+    else:
+        print("WLAN is not connected")
 
+res = urequests.get("http://192.168.10.39:9087/ping", timeout=3)
+print(res)
+print(res.content)
+jsonresults = json.loads(res.content)
+print(jsonresults)
+utime.sleep(5)
