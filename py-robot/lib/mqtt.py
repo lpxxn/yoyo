@@ -42,4 +42,29 @@ def mqtt_subscribe(topic, msg):
     print(topic, message)
     print("Done")
 
-
+# 应用程序希望
+# {
+#   "state": {
+#     "desired": {
+#       "color": "eeeaf","foo":"vvv"
+#     }
+#   }
+# }
+# 设备 report 完后
+# {
+#   "state": {
+#     "reported": {
+#       "command": "cccc","name":"bb","color":"eeeaf","foo":"vveev"
+#     }
+#   }
+# }
+# delta里只显示设备和desired不一样的值
+# [Message]
+# Topic: $aws/things/Thing_testDeviceType_012b23ad-ad20-45d4-bce3-6af82683fd92/shadow/update/accepted
+# Payload:
+# {"state":{"reported":{"command":"cccc","name":"bb","color":"eeeaf","foo":"vveev"}},"metadata":{"reported":{"command":{"timestamp":1715096264},"name":{"timestamp":1715096264},"color":{"timestamp":1715096264},"foo":{"timestamp":1715096264}}},"version":324,"timestamp":1715096264}
+#
+# [Message]
+# Topic: $aws/things/Thing_testDeviceType_012b23ad-ad20-45d4-bce3-6af82683fd92/shadow/update/delta
+# Payload:
+# {"version":324,"timestamp":1715096264,"state":{"foo":"vvv"},"metadata":{"foo":{"timestamp":1715095641}}}
