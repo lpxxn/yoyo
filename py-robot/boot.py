@@ -33,11 +33,11 @@ while wifi.WLAN == None:
     else:
         print("WLAN is not connected")
 
-res = urequests.get("http://192.168.10.39:9087/ping", timeout=3)
-print(res)
-print(res.content)
-jsonresults = json.loads(res.content)
-print(jsonresults)
+# res = urequests.get("http://192.168.10.39:9087/ping", timeout=3)
+# print(res)
+# print(res.content)
+# jsonresults = json.loads(res.content)
+# print(jsonresults)
 # utime.sleep(5)
 
 info = os.uname()
@@ -46,38 +46,36 @@ info = os.uname()
 # The callback function mqtt_subscribe is what will be called if we
 # get a new message on topic_sub.
 try:
-    mqtt = mqtt.mqtt_connect()
-    mqtt.set_callback(mqtt.mqtt_subscribe)
-    mqtt.subscribe(mqtt.topic_sub)
+    mqtt_client = mqtt.mqtt_connect()
 except:
     print("Unable to connect to MQTT.")
 
 while True:
     # Check for messages.
     try:
-        mqtt.check_msg()
+        mqtt_client.check_msg()
     except:
         print("Unable to check for messages.")
 
-    mesg = ujson.dumps({
-        "state": {
-            "reported": {
-                "device": {
-                    "client": mqtt.client_id,
-                    "uptime": time.ticks_ms(),
-                    "hardware": info[0],
-                    "firmware": info[2]
-                }
-            }
-        }
-    })
+    # mesg = ujson.dumps({
+    #     "state": {
+    #         "reported": {
+    #             "device": {
+    #                  "client": mqtt.client_id,
+    #                 "hardware": info[0],
+    #                 "firmware": info[2]
+    #             }
+    #         }
+    #     }
+    # })
 
     # Using the message above, the device shadow is updated.
-    try:
-        mqtt.mqtt_publish(client=mqtt, message=mesg)
-    except:
-        print("Unable to publish message.")
+    # mqtt.mqtt_publish(client=mqtt_client, message=mesg)
+    # try:
+    #     mqtt.mqtt_publish(client=mqtt_client, message=mesg)
+    # except:
+    #     print("Unable to publish message.")
 
     # Wait for 10 seconds before checking for messages and publishing a new update.
     print("Sleep for 10 seconds")
-    time.sleep(10)
+    utime.sleep(10)
