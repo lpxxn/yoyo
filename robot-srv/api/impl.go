@@ -25,6 +25,7 @@ func (Server) GetPing(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// GetUnlock Given permission to the Terminal app for Screen Recording and Accessibility under: System Settings > Privacy and Security >  Accessibility, Screen Recording.
 func (s Server) GetUnlock(c *gin.Context) {
 	robotgo.Click("left", true)
 	//robotgo.MouseSleep = 100
