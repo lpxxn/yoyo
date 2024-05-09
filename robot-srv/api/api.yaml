@@ -5,6 +5,16 @@ info:
   version: 1.0.0
   title: Minimal ping API server
 paths:
+  /unlock:
+    get:
+      responses:
+        '200':
+          description: unlock success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonData'
+
   /ping:
     get:
       responses:
@@ -25,3 +35,15 @@ components:
         ping:
           type: string
           example: pong
+    CommonData:
+      type: object
+      required:
+        - code
+        - desc
+      properties:
+        code:
+          type: string
+          example: OK
+        desc:
+          type: string
+          example: SUCCESS

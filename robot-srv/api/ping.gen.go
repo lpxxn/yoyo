@@ -7,6 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CommonData defines model for CommonData.
+type CommonData struct {
+	Code string `json:"code"`
+	Desc string `json:"desc"`
+}
+
 // Pong defines model for Pong.
 type Pong struct {
 	Ping string `json:"ping"`
@@ -17,6 +23,9 @@ type ServerInterface interface {
 
 	// (GET /ping)
 	GetPing(c *gin.Context)
+
+	// (GET /unlock)
+	GetUnlock(c *gin.Context)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -39,6 +48,19 @@ func (siw *ServerInterfaceWrapper) GetPing(c *gin.Context) {
 	}
 
 	siw.Handler.GetPing(c)
+}
+
+// GetUnlock operation middleware
+func (siw *ServerInterfaceWrapper) GetUnlock(c *gin.Context) {
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.GetUnlock(c)
 }
 
 // GinServerOptions provides options for the Gin server.
@@ -69,4 +91,5 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 	}
 
 	router.GET(options.BaseURL+"/ping", wrapper.GetPing)
+	router.GET(options.BaseURL+"/unlock", wrapper.GetUnlock)
 }
