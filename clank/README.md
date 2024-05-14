@@ -1,6 +1,6 @@
 # clank
 
-A new Flutter project.
+clank
 
 ## Getting Started
 

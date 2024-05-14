@@ -115,6 +115,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!clank/lib
 !py-robot/lib
 lib64/
 parts/
