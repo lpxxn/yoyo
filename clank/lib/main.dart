@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart as p;
+import 'package:path/path.dart' as p;
+
+import 'dart:convert';
+import 'dart:io';
+
 void main() {
   runApp(const MyApp());
 }
@@ -67,9 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
-  void _loadFile(String naem) {
-    var path = 
+  void _loadFile(String name) {
+    var path = p.join(p.dirname(p.fromUri(Platform.script)), name);
   }
+  // https://github.com/dart-lang/yaml/blob/master/benchmark/benchmark.dart
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
