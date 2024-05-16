@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:path/path.dart as p;
 void main() {
   runApp(const MyApp());
 }
@@ -67,7 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
-
+  void _loadFile(String naem) {
+    var path = 
+  }
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
