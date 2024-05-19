@@ -56,16 +56,20 @@ def mqtt_subscribe(topic, msg):
     print("Message received...")
     message = ujson.loads(msg)
     print(topic, message)
-    if 'state' not in message:
-        print("no state")
-        return
-    state = message['state']
-    if 'command' not in state:
-        print("no command")
-        return
-    command = state['command']
-    print(command)
-    print("Subscribe Done")
+
+    if topic == ble_topic_sub:
+        print("ble topic")
+
+    # if 'state' not in message:
+    #     print("no state")
+    #     return
+    # state = message['state']
+    # if 'command' not in state:
+    #     print("no command")
+    #     return
+    # command = state['command']
+    # print(command)
+    # print("Subscribe Done")
 
 # 应用程序希望
 # {
