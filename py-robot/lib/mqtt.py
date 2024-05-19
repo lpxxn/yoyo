@@ -17,10 +17,11 @@ with open(private_cert, 'r') as f:
     cert = f.read()
     print("cert", cert)
 
-topic_pub = "$aws/things/" + thing_name + "/shadow/update"
-topic_sub = "$aws/things/" + thing_name + "/shadow/update/delta"
+shadow_topic_pub = "$aws/things/" + thing_name + "/shadow/update"
+shadow_topic_sub = "$aws/things/" + thing_name + "/shadow/update/delta"
 ssl_params = {"key": key, "cert": cert}
-print("topic_pub: ", topic_pub)
+print("topic_pub: ", shadow_topic_pub)
+ble_topic_sub = f"testDeviceType/${client_id}/scanBle"
 
 def mqtt_connect(client=client_id, endpoint=aws_endpoint, sslp=ssl_params):
     mqtt = MQTTClient(client_id=client, server=endpoint, port=8883, keepalive=1200, ssl=True, ssl_params=sslp)
@@ -28,7 +29,8 @@ def mqtt_connect(client=client_id, endpoint=aws_endpoint, sslp=ssl_params):
     mqtt.connect()
     print("Done")
     mqtt.set_callback(mqtt_subscribe)
-    mqtt.subscribe(topic_sub)
+    mqtt.subscribe(shadow_topic_sub)
+    mqtt.subscribe(ble_topic_sub)
     # Publish a test MQTT message.
     # mqtt.publish(topic=topic_pub, msg='hello world', qos=0)
     mesg = ujson.dumps({
@@ -43,9 +45,9 @@ def mqtt_connect(client=client_id, endpoint=aws_endpoint, sslp=ssl_params):
     return mqtt
 
 
-def mqtt_publish(client, topic=topic_pub, message=''):
+def mqtt_publish(client, topic=shadow_topic_pub, message=''):
     print("Publishing message...")
-    print("topic:", topic_pub)
+    print("topic:", shadow_topic_pub)
     client.publish(topic, message)
     print("msg: ", message)
 
