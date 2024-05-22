@@ -3,6 +3,7 @@ module github.com/lpxxn/yoyo/robot-srv
 go 1.20
 
 require (
+	github.com/BurntSushi/toml v1.3.2
 	github.com/deepmap/oapi-codegen/v2 v2.1.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-vgo/robotgo v0.110.1

@@ -11,6 +11,7 @@ import (
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/v2"
 	"github.com/lpxxn/yoyo/robot-srv/api"
+	"github.com/lpxxn/yoyo/robot-srv/env"
 )
 
 // Global koanf instance. Use . as the key path delimiter. This can be / or anything.
@@ -51,7 +52,7 @@ func main() {
 	//robotgo.Toggle("right")
 	//robotgo.Toggle("right", "up")
 	// create a type that satisfies the `api.ServerInterface`, which contains an implementation of every operation from the generated code
-
+	defaultConf := env.DefaultConfig()
 	if err := k.Load(file.Provider("env/app.toml"), parser); err != nil {
 		log.Fatalf("error loading config: %v", err)
 	}
