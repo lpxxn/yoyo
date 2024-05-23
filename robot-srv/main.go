@@ -4,20 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/knadh/koanf/parsers/toml"
-	"github.com/knadh/koanf/providers/file"
-	"github.com/knadh/koanf/v2"
 	"github.com/lpxxn/yoyo/robot-srv/api"
 	"github.com/lpxxn/yoyo/robot-srv/env"
-)
-
-// Global koanf instance. Use . as the key path delimiter. This can be / or anything.
-var (
-	k      = koanf.New(".")
-	parser = toml.Parser()
 )
 
 func main() {
@@ -52,22 +42,13 @@ func main() {
 	//robotgo.Toggle("right")
 	//robotgo.Toggle("right", "up")
 	// create a type that satisfies the `api.ServerInterface`, which contains an implementation of every operation from the generated code
-	defaultConf := env.DefaultConfig()
-	if err := k.Load(file.Provider("env/app.toml"), parser); err != nil {
-		log.Fatalf("error loading config: %v", err)
-	}
-	type AppConf struct {
-		PWD string `koanf:"pwd"`
-	}
-	conf := &AppConf{}
-	if err := k.Unmarshal("", conf); err != nil {
+	config, err := env.GetProdConfig()
+	log.Println(config, err)
+	if err := env.SaveProdConfig(config); err != nil {
 		panic(err)
 	}
 
-	b, _ := k.Marshal(parser)
-	fmt.Println(string(b))
-
-	os.WriteFile("env/app.toml", b, 0755)
+	//os.WriteFile("env/app.toml", b, 0755)
 
 	server := api.NewServer()
 	r := gin.Default()

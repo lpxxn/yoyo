@@ -26,7 +26,8 @@ func FindFileRealPath(startDir, targetFile string) (string, error) {
 }
 
 func EnsureDir(dirName string) error {
-	err := os.MkdirAll(dirName, os.ModeDir)
+	//syscall.Umask(0)
+	err := os.MkdirAll(dirName, 0777)
 	if err == nil || os.IsExist(err) {
 		return nil
 	} else {
