@@ -5,15 +5,25 @@ info:
   version: 1.0.0
   title: Minimal ping API server
 paths:
+  /screen/pwd:
+    summary: save screen password for unlock the computer screen
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveScreenPassword'
+      responses:
+        '200':
+          $ref: '#/components/responses/Normal'
+
   /unlock:
     get:
       responses:
         '200':
-          description: unlock success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CommonData'
+          $ref: '#/components/responses/Normal'
+
 
   /ping:
     get:
@@ -25,7 +35,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/Pong'
 components:
+  responses:
+    Normal:
+      description: normal response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonData'
+
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
   schemas:
+    SaveScreenPassword:
+      type: object
+      required:
+        - pwd
+      properties:
+        pwd:
+          type: string
+          example: abc1234
     # base types
     Pong:
       type: object
@@ -47,3 +86,14 @@ components:
         desc:
           type: string
           example: SUCCESS
+    # Schema for error response body
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message

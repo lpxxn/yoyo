@@ -12,6 +12,11 @@ var _ ServerInterface = (*Server)(nil)
 
 type Server struct{}
 
+func (s Server) PostScreenPwd(c *gin.Context) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func NewServer() Server {
 	return Server{}
 }

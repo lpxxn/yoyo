@@ -18,11 +18,25 @@ type Pong struct {
 	Ping string `json:"ping"`
 }
 
+// SaveScreenPassword defines model for SaveScreenPassword.
+type SaveScreenPassword struct {
+	Pwd string `json:"pwd"`
+}
+
+// Normal defines model for Normal.
+type Normal = CommonData
+
+// PostScreenPwdJSONRequestBody defines body for PostScreenPwd for application/json ContentType.
+type PostScreenPwdJSONRequestBody = SaveScreenPassword
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
 	// (GET /ping)
 	GetPing(c *gin.Context)
+
+	// (POST /screen/pwd)
+	PostScreenPwd(c *gin.Context)
 
 	// (GET /unlock)
 	GetUnlock(c *gin.Context)
@@ -48,6 +62,19 @@ func (siw *ServerInterfaceWrapper) GetPing(c *gin.Context) {
 	}
 
 	siw.Handler.GetPing(c)
+}
+
+// PostScreenPwd operation middleware
+func (siw *ServerInterfaceWrapper) PostScreenPwd(c *gin.Context) {
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.PostScreenPwd(c)
 }
 
 // GetUnlock operation middleware
@@ -91,5 +118,6 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 	}
 
 	router.GET(options.BaseURL+"/ping", wrapper.GetPing)
+	router.POST(options.BaseURL+"/screen/pwd", wrapper.PostScreenPwd)
 	router.GET(options.BaseURL+"/unlock", wrapper.GetUnlock)
 }
