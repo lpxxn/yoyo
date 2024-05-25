@@ -209,6 +209,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+!robot-srv/env
 
 # Spyder project settings
 .spyderproject
