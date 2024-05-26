@@ -1,7 +1,14 @@
 package env
 
+type IConfig interface {
+	GetPWD() *PWDInfo
+}
 type Config struct {
-	PWD PWDInfo `toml:"pwd"`
+	PWD *PWDInfo `toml:"pwd"`
+}
+
+func (c *Config) GetPWD() *PWDInfo {
+	return c.PWD
 }
 
 type PWDInfo struct {

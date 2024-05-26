@@ -5,6 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-vgo/robotgo"
+	"github.com/lpxxn/yoyo/robot-srv/env"
+	"github.com/lpxxn/yoyo/robot-srv/tools"
 )
 
 // ensure that we've conformed to the `ServerInterface` with a compile-time check
@@ -13,8 +15,31 @@ var _ ServerInterface = (*Server)(nil)
 type Server struct{}
 
 func (s Server) PostScreenPwd(c *gin.Context) {
-	//TODO implement me
-	panic("implement me")
+	param := &PostScreenPwdJSONRequestBody{}
+	if err := c.ShouldBindJSON(param); err != nil {
+		c.JSON(http.StatusOK, &CommonData{
+			Code: "InvalidParam",
+			Desc: "invalid param",
+		})
+		return
+	}
+	conf, _ := env.GetProdConfig()
+
+	encryptKey, err := tools.ECBEncryptString(param.Pwd, conf.GetPWD().EncryptKey)
+	if err != nil {
+		c.JSON(http.StatusOK, &CommonData{
+			Code: "InvalidParam",
+			Desc: "invalid param",
+		})
+		return
+	}
+	conf.GetPWD().ScreenEncryptedPWD = encryptKey
+	if err := env.SaveProdConfig(conf); err != nil {
+		panic(err)
+	}
+	c.JSON(http.StatusOK, CommonData{
+		Code: "OK",
+	})
 }
 
 func NewServer() Server {

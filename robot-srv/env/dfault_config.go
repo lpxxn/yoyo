@@ -13,10 +13,11 @@ import (
 
 //go:embed default/config.toml
 var defaultConfigContent string
+var prodConfig IConfig = nil
 
 const prodConfigFile = "env/prod/config.toml"
 
-func DefaultConfig() (*Config, error) {
+func DefaultConfig() (IConfig, error) {
 	config := &Config{}
 	_, err := toml.Decode(defaultConfigContent, &config)
 	if err != nil {
@@ -25,7 +26,10 @@ func DefaultConfig() (*Config, error) {
 	return config, nil
 }
 
-func GetProdConfig() (*Config, error) {
+func GetProdConfig() (IConfig, error) {
+	if prodConfig != nil {
+		return prodConfig, nil
+	}
 	// Get the current working directory
 	wd, err := os.Getwd()
 	if err != nil {
@@ -42,14 +46,19 @@ func GetProdConfig() (*Config, error) {
 	_, err = os.Stat(configFilePath)
 	if err == nil {
 		config := &Config{}
-		_, err = toml.DecodeFile(defaultConfigContent, &config)
+		_, err = toml.Decode(defaultConfigContent, &config)
+		if err != nil {
+			return nil, err
+		}
+		prodConfig = config
 		return config, nil
 	} else {
-		return DefaultConfig()
+		prodConfig, err = DefaultConfig()
+		return prodConfig, err
 	}
 }
 
-func SaveProdConfig(config *Config) error {
+func SaveProdConfig(config IConfig) error {
 	wd, err := os.Getwd()
 	if err != nil {
 		fmt.Println("Failed to get the current working directory:", err)
@@ -60,6 +69,7 @@ func SaveProdConfig(config *Config) error {
 	exeDir := filepath.Dir(wd)
 
 	configFilePath := filepath.Join(exeDir, prodConfigFile)
+	fmt.Printf("prod config file path: %s \n", configFilePath)
 	if err := tools.EnsureDir(filepath.Dir(configFilePath)); err != nil {
 		return err
 	}
