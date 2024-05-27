@@ -13,12 +13,9 @@ import (
 func main() {
 	config, err := env.GetProdConfig()
 	log.Println(config, err)
-	if err := env.SaveProdConfig(config); err != nil {
-		panic(err)
-	}
-
-	//os.WriteFile("env/app.toml", b, 0755)
-
+	//if err := env.SaveProdConfig(config); err != nil {
+	//	panic(err)
+	//}
 	server := api.NewServer()
 	r := gin.Default()
 	api.RegisterHandlers(r, server)

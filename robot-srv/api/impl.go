@@ -65,7 +65,7 @@ func (s Server) GetUnlock(c *gin.Context) {
 	//	fmt.Print("keytap enter err", err)
 	//}
 	conf, _ := env.GetProdConfig()
-	pwd, err := tools.ECBDecryptString(conf.GetPWD().ScreenEncryptedPWD, conf.GetPWD().ScreenEncryptedPWD)
+	pwd, err := tools.ECBDecryptString(conf.GetPWD().ScreenEncryptedPWD, conf.GetPWD().EncryptKey)
 	if err != nil {
 		c.JSON(http.StatusOK, CommonData{
 			Code: "Invalid PWD",
