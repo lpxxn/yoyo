@@ -46,7 +46,7 @@ func GetProdConfig() (IConfig, error) {
 	_, err = os.Stat(configFilePath)
 	if err == nil {
 		config := &Config{}
-		_, err = toml.Decode(defaultConfigContent, &config)
+		_, err = toml.DecodeFile(configFilePath, &config)
 		if err != nil {
 			return nil, err
 		}

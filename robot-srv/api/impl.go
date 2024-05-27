@@ -64,13 +64,16 @@ func (s Server) GetUnlock(c *gin.Context) {
 	//if err != nil {
 	//	fmt.Print("keytap enter err", err)
 	//}
-	robotgo.TypeStr("1231234")
+	conf, _ := env.GetProdConfig()
+	pwd, err := tools.ECBDecryptString(conf.GetPWD().ScreenEncryptedPWD, conf.GetPWD().ScreenEncryptedPWD)
+	if err != nil {
+		c.JSON(http.StatusOK, CommonData{
+			Code: "Invalid PWD",
+		})
+		return
+	}
+	robotgo.TypeStr(pwd)
 	robotgo.KeyTap(robotgo.Enter)
-	//robotgo.Move(100, 200)
-	////robotgo.MoveRelative(0, -10)
-	//robotgo.MilliSleep(100)
-	//robotgo.KeyToggle("a")
-	//robotgo.KeyToggle("a", "up")
 	c.JSON(http.StatusOK, CommonData{
 		Code: "OK",
 	})
