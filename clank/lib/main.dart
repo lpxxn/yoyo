@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import 'dart:convert';
 import 'dart:io';
-import 'tab.dart' as tabs;
+import 'pages/tab.dart' as tabs;
 
 void main() {
   runApp(const MyApp());
