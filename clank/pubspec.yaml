@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   get:
+  get_storage:
   flutter:
     sdk: flutter
 
@@ -38,6 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   yaml: ^3.1.2
   path: ^1.9.0
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

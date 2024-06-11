@@ -1,5 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> saveName() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('name', 'John Doe');
+}
+
+Future<String?> getName() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('name');
+}
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -9,6 +20,8 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  var name = "name";
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -25,6 +38,19 @@ class _SettingPageState extends State<SettingPage> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ))),
+      Text(name),
+      ElevatedButton(
+          onPressed: () async => {await saveName()},
+          child: const Text("setName")),
+      ElevatedButton(onPressed: () async => {}, child: Text("getName"))
     ]));
+  }
+
+  void changeName() async {
+    var v = await getName();
+    setState(() {
+      print(v);
+      name = v!;
+    });
   }
 }
