@@ -42,7 +42,7 @@ class _SettingPageState extends State<SettingPage> {
       ElevatedButton(
           onPressed: () async => {await saveName()},
           child: const Text("setName")),
-      ElevatedButton(onPressed: () async => {}, child: Text("getName"))
+      ElevatedButton(onPressed: changeName, child: Text("getName"))
     ]));
   }
 
