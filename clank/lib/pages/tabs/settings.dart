@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> saveName() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('name', 'John Doe');
-}
+// Future<void> saveName() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   await prefs.setString('name', 'John Doe');
+// }
 
-Future<String?> getName() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('name');
-}
+// Future<String?> getName() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   return prefs.getString('name');
+// }
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -21,6 +21,31 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   var name = "name";
+  final TextEditingController _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  // Load settings from SharedPreferences
+  void _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name') ?? "haha";
+      _textController.text = name;
+    });
+  }
+
+  // Save settings to SharedPreferences
+  void _saveSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('name', _textController.text);
+    setState(() {
+      name = _textController.text;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +58,7 @@ class _SettingPageState extends State<SettingPage> {
                 borderRadius: BorderRadius.circular(10),
               ))),
       TextField(
+          controller: _textController,
           decoration: InputDecoration(
               labelText: "pubKey",
               border: OutlineInputBorder(
@@ -40,17 +66,9 @@ class _SettingPageState extends State<SettingPage> {
               ))),
       Text(name),
       ElevatedButton(
-          onPressed: () async => {await saveName()},
+          onPressed: () async => {_saveSettings()},
           child: const Text("setName")),
-      ElevatedButton(onPressed: changeName, child: Text("getName"))
+      ElevatedButton(onPressed: _loadSettings, child: const Text("getName"))
     ]));
-  }
-
-  void changeName() async {
-    var v = await getName();
-    setState(() {
-      print(v);
-      name = v!;
-    });
   }
 }

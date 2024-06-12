@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dart:convert';
 import 'dart:io';
 import 'pages/tab.dart' as tabs;
-import 'package:get_storage/get_storage.dart';
 
 void main() async {
   // Load and obtain the shared preferences for this app.
-  final prefs = await SharedPreferences.getInstance();
+  // final prefs = await SharedPreferences.getInstance();
 
 // Save the counter value to persistent storage under the 'counter' key.
   // await prefs.setInt('counter', 111);
   // await prefs.setString('name', 'John Doe');
   // print(prefs.get("counter"));
-  print(prefs.getString('name'));
+  // print(prefs.getString('name'));
   runApp(const MyApp());
 }
 
