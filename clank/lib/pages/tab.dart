@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './tabs/home.dart';
 import './tabs/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Tab extends StatefulWidget {
   const Tab({super.key});
@@ -11,7 +12,7 @@ class Tab extends StatefulWidget {
 
 class _TabState extends State<Tab> {
   int _currentIdx = 0;
-  List<Widget> _pages = [HomePage(), SettingPage()];
+  final List<Widget> _pages = [const HomePage(), const SettingPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +39,18 @@ class _TabState extends State<Tab> {
         height: 70,
         width: 70,
         padding: const EdgeInsets.all(6),
-        margin: EdgeInsets.only(top: 6),
+        margin: const EdgeInsets.only(top: 6),
         decoration: BoxDecoration(
           color: Colors.black12,
           borderRadius: BorderRadius.circular(30),
         ),
         child: FloatingActionButton(
           child: const Icon(Icons.adb),
-          onPressed: () {
+          onPressed: () async {
             print("WOL");
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            var apiUrl = prefs.getString('awsApiURL') ?? "";
+            print(apiUrl);
           },
         ),
       ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,10 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 //   await prefs.setString('name', 'John Doe');
 // }
 
-// Future<String?> getName() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   return prefs.getString('name');
-// }
+Future<String?> getName(key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString(key);
+}
+
+const awsApiURL = 'awsApiURL';
+const privateKeyName = 'privateKey';
+const publicKeyName = 'publicKey';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -20,6 +23,7 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  final TextEditingController _textApiURLController = TextEditingController();
   final TextEditingController _textPrivateKeyController =
       TextEditingController();
   final TextEditingController _textPublicKeyController =
@@ -35,23 +39,42 @@ class _SettingPageState extends State<SettingPage> {
   void _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _textPrivateKeyController.text = prefs.getString('privateKey') ?? "";
-      _textPublicKeyController.text = prefs.getString('publicKey') ?? "";
+      _textApiURLController.text = prefs.getString(awsApiURL) ?? "";
+      _textPrivateKeyController.text = prefs.getString(privateKeyName) ?? "";
+      _textPublicKeyController.text = prefs.getString(publicKeyName) ?? "";
     });
   }
 
   // Save settings to SharedPreferences
   void _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('privateKey', _textPrivateKeyController.text);
-    prefs.setString('publicKey', _textPublicKeyController.text);
+    prefs.setString(awsApiURL, _textApiURLController.text);
+    prefs.setString(privateKeyName, _textPrivateKeyController.text);
+    prefs.setString(publicKeyName, _textPublicKeyController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
         child: Column(children: [
-      const SizedBox(height: 20),
+      const SizedBox(height: 10),
+      Container(
+        height: 55,
+        margin: const EdgeInsets.symmetric(horizontal: 29),
+        child: TextField(
+            controller: _textApiURLController,
+            maxLines: null,
+            minLines: null,
+            expands: true,
+            decoration: InputDecoration(
+                labelText: "API URL",
+                // contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ))),
+      ),
+      const SizedBox(height: 10),
+
       Container(
         height: 200,
         margin: const EdgeInsets.symmetric(horizontal: 29),
