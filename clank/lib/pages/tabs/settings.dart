@@ -20,8 +20,10 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  var name = "name";
-  final TextEditingController _textController = TextEditingController();
+  final TextEditingController _textPrivateKeyController =
+      TextEditingController();
+  final TextEditingController _textPublicKeyController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -33,42 +35,57 @@ class _SettingPageState extends State<SettingPage> {
   void _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      name = prefs.getString('name') ?? "haha";
-      _textController.text = name;
+      _textPrivateKeyController.text = prefs.getString('privateKey') ?? "";
+      _textPublicKeyController.text = prefs.getString('publicKey') ?? "";
     });
   }
 
   // Save settings to SharedPreferences
   void _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('name', _textController.text);
-    setState(() {
-      name = _textController.text;
-    });
+    prefs.setString('privateKey', _textPrivateKeyController.text);
+    prefs.setString('publicKey', _textPublicKeyController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
         child: Column(children: [
-      TextField(
-          decoration: InputDecoration(
-              labelText: "privateKey",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ))),
-      TextField(
-          controller: _textController,
-          decoration: InputDecoration(
-              labelText: "pubKey",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ))),
-      Text(name),
+      const SizedBox(height: 20),
+      Container(
+        height: 200,
+        margin: const EdgeInsets.symmetric(horizontal: 29),
+        child: TextField(
+            controller: _textPrivateKeyController,
+            maxLines: null,
+            minLines: null,
+            expands: true,
+            decoration: InputDecoration(
+                labelText: "privateKey",
+                // contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ))),
+      ),
+      const SizedBox(height: 10),
+      Container(
+          height: 200,
+          margin: const EdgeInsets.symmetric(horizontal: 29),
+          child: TextField(
+              controller: _textPublicKeyController,
+              maxLines: null,
+              minLines: null,
+              expands: true,
+              decoration: InputDecoration(
+                  labelText: "pubKey",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  )))),
+      // Text(name),
+      const SizedBox(height: 20),
       ElevatedButton(
-          onPressed: () async => {_saveSettings()},
-          child: const Text("setName")),
-      ElevatedButton(onPressed: _loadSettings, child: const Text("getName"))
+          onPressed: () async => {_saveSettings()}, child: const Text("SAVE")),
+      // ElevatedButton(onPressed: _loadSettings, child: const Text("getName"))
     ]));
   }
 }
