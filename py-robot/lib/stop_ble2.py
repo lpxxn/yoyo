@@ -22,9 +22,11 @@ class BLE:
         self.ble.gap_advertise(None)
         print("Advertising stopped")
 
-ble = BLE()
-ble.start_advertising()
 
-# Keep the script running to allow the timer to execute
-while True:
-    sleep_ms(1000)
+if __name__ == "__main__":
+    ble = BLE()
+    ble.start_advertising()
+
+    # Keep the script running to allow the timer to execute
+    while True:
+        sleep_ms(1000)

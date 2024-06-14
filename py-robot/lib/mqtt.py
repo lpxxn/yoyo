@@ -2,6 +2,7 @@ import os
 import time
 import ujson
 from umqtt.simple import MQTTClient
+from stop_ble2 import BLE
 
 aws_endpoint = b'a244sdkbxgj2hu.iot.cn-north-1.amazonaws.com.cn'
 client_id = "012b23ad-ad20-45d4-bce3-6af82683fd92"
@@ -59,6 +60,9 @@ def mqtt_subscribe(topic, msg):
 
     if topic == ble_topic_sub:
         print("ble topic")
+        ble = BLE()
+        ble.start_advertising()
+
 
     # if 'state' not in message:
     #     print("no state")
