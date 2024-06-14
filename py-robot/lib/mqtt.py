@@ -22,7 +22,8 @@ shadow_topic_pub = "$aws/things/" + thing_name + "/shadow/update"
 shadow_topic_sub = "$aws/things/" + thing_name + "/shadow/update/delta"
 ssl_params = {"key": key, "cert": cert}
 print("topic_pub: ", shadow_topic_pub)
-ble_topic_sub = f"testDeviceType/${client_id}/scanBle"
+# ble_topic_sub = f"testDeviceType/${client_id}/scanBle"
+ble_topic_sub = f"testDeviceType/msg/scanBle"
 
 def mqtt_connect(client=client_id, endpoint=aws_endpoint, sslp=ssl_params):
     mqtt = MQTTClient(client_id=client, server=endpoint, port=8883, keepalive=1200, ssl=True, ssl_params=sslp)
