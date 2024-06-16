@@ -4,23 +4,22 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 
-void sendTopicMsg() async {
+void sendMsg() async {
   final dio = Dio();
 
-  // Configure Dio to use mTLS with CA certificate, client certificate, and private key
-  (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-      (HttpClient client) {
-    SecurityContext context = SecurityContext(withTrustedRoots: false);
+  dio.httpClientAdapter = IOHttpClientAdapter()
+    ..createHttpClient = () {
+      SecurityContext context = SecurityContext(withTrustedRoots: false);
 
-    // Set the trusted CA certificate
-    context.setTrustedCertificates('path/to/AmazonRootCA1.pem');
+      // Set the trusted CA certificate
+      context.setTrustedCertificates('path/to/AmazonRootCA1.pem');
 
-    // Set the client certificate and private key
-    context.useCertificateChain('path/to/certificate.pem.crt');
-    context.usePrivateKey('path/to/private.pem.key');
+      // Set the client certificate and private key
+      context.useCertificateChain('path/to/certificate.pem.crt');
+      context.usePrivateKey('path/to/private.pem.key');
 
-    return HttpClient(context: context);
-  };
+      return HttpClient(context: context);
+    };
 
   // The topic to publish to and the message
   const topic = 'testDeviceType/common';
