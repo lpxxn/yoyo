@@ -1,3 +1,4 @@
+import 'package:clank/pages/tabs/ito.dart';
 import 'package:flutter/material.dart';
 import './tabs/home.dart';
 import './tabs/settings.dart';
@@ -49,8 +50,9 @@ class _TabState extends State<Tab> {
           onPressed: () async {
             print("WOL");
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            var apiUrl = prefs.getString('awsApiURL') ?? "";
-            print(apiUrl);
+            var apiUrl = prefs.getString('awsApiURL') ??
+                'https://a244sdkbxgj2hu.ats.iot.cn-north-1.amazonaws.com.cn:8443';
+            sendMsg(apiUrl, IotTopic.scanBleTopic, {"name": "tom"}, "", "", "");
           },
         ),
       ),

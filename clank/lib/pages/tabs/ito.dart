@@ -20,20 +20,22 @@ String getEndpoint(String endpoint, IotTopic topic) {
   return '$endpoint/topics/${selectedTopic}?qos=1';
 }
 
-void sendMsg(String endpoint, IotTopic topic, Map<String, String> message) async {
+void sendMsg(String endpoint, IotTopic topic, Map<String, String> message,
+    String certification, String certChain, String privateKey) async {
   final dio = Dio();
-
+  final iotEndPoint = getEndpoint(endpoint, topic);
   dio.httpClientAdapter = IOHttpClientAdapter()
     ..createHttpClient = () {
       SecurityContext context = SecurityContext(withTrustedRoots: false);
 
       // Set the trusted CA certificate
-      context.setTrustedCertificates('path/to/AmazonRootCA1.pem');
-
+      // context.setTrustedCertificates('/Users/li/go/src/github.com/lpxxn/yoyo/clank/build/AmazonRootCA1.pem');
+      context.setTrustedCertificatesBytes(utf8.encode(certification));
       // Set the client certificate and private key
-      context.useCertificateChain('path/to/certificate.pem.crt');
-      context.usePrivateKey('path/to/private.pem.key');
-
+      // context.useCertificateChain('/Users/li/go/src/github.com/lpxxn/yoyo/clank/build/certificate.pem.crt');
+      context.useCertificateChainBytes(utf8.encode(certChain));
+      // context.usePrivateKey('/Users/li/go/src/github.com/lpxxn/yoyo/clank/build/private.pem.key');
+      context.usePrivateKeyBytes(utf8.encode(privateKey));
       return HttpClient(context: context);
     };
 
@@ -45,11 +47,11 @@ void sendMsg(String endpoint, IotTopic topic, Map<String, String> message) async
 
   // const endpoint =
   //     'https://a244sdkbxgj2hu.ats.iot.cn-north-1.amazonaws.com.cn:8443/topics/$scanBleTopic?qos=1';
-
+  print('endpoint: $iotEndPoint');
   try {
     // Send the POST request with the message
     final response = await dio.post(
-      endpoint,
+      iotEndPoint,
       data: jsonEncode(message),
     );
 
