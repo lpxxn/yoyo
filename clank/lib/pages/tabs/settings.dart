@@ -11,9 +11,11 @@ Future<String?> getName(key) async {
   return prefs.getString(key);
 }
 
-const awsApiURL = 'awsApiURL';
+const screenServerAPIURL = 'screenApiURL';
+const awsAPIURL = 'awsApiURL';
+const certificateKeyName = "certificate";
+const certChainKeyName = 'certChainKey';
 const privateKeyName = 'privateKey';
-const publicKeyName = 'publicKey';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -23,10 +25,15 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  final TextEditingController _textApiURLController = TextEditingController();
-  final TextEditingController _textPrivateKeyController =
+  final TextEditingController _textScreenApiURLController =
       TextEditingController();
-  final TextEditingController _textPublicKeyController =
+  final TextEditingController _textIOTApiURLController =
+      TextEditingController();
+  final TextEditingController _textCertificateKeyController =
+      TextEditingController();
+  final TextEditingController _textCertChainController =
+      TextEditingController();
+  final TextEditingController _textPrivateKeyController =
       TextEditingController();
 
   @override
@@ -39,36 +46,58 @@ class _SettingPageState extends State<SettingPage> {
   void _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _textApiURLController.text = prefs.getString(awsApiURL) ?? "";
+      _textScreenApiURLController.text =
+          prefs.getString(screenServerAPIURL) ?? '';
+      _textIOTApiURLController.text = prefs.getString(awsAPIURL) ?? "";
+      _textCertificateKeyController.text =
+          prefs.getString(certificateKeyName) ?? "";
+      _textCertChainController.text = prefs.getString(certChainKeyName) ?? "";
       _textPrivateKeyController.text = prefs.getString(privateKeyName) ?? "";
-      _textPublicKeyController.text = prefs.getString(publicKeyName) ?? "";
     });
   }
 
   // Save settings to SharedPreferences
   void _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString(awsApiURL, _textApiURLController.text);
+    prefs.setString(screenServerAPIURL, _textScreenApiURLController.text);
+    prefs.setString(awsAPIURL, _textIOTApiURLController.text);
+    prefs.setString(certificateKeyName, _textCertificateKeyController.text);
+    prefs.setString(certChainKeyName, _textCertChainController.text);
     prefs.setString(privateKeyName, _textPrivateKeyController.text);
-    prefs.setString(publicKeyName, _textPublicKeyController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        padding: const EdgeInsets.only(top: 10.0, bottom: 50),
         child: Column(children: [
           const SizedBox(height: 10),
           Container(
             height: 55,
             margin: const EdgeInsets.symmetric(horizontal: 29),
             child: TextField(
-                controller: _textApiURLController,
+                controller: _textIOTApiURLController,
                 maxLines: null,
                 minLines: null,
                 expands: true,
                 decoration: InputDecoration(
-                    labelText: "API URL",
+                    labelText: "IOT Endpoint",
+                    // contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ))),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: 55,
+            margin: const EdgeInsets.symmetric(horizontal: 29),
+            child: TextField(
+                controller: _textIOTApiURLController,
+                maxLines: null,
+                minLines: null,
+                expands: true,
+                decoration: InputDecoration(
+                    labelText: "IOT Endpoint",
                     // contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -80,12 +109,28 @@ class _SettingPageState extends State<SettingPage> {
             height: 200,
             margin: const EdgeInsets.symmetric(horizontal: 29),
             child: TextField(
-                controller: _textPrivateKeyController,
+                controller: _textCertificateKeyController,
                 maxLines: null,
                 minLines: null,
                 expands: true,
                 decoration: InputDecoration(
-                    labelText: "privateKey",
+                    labelText: "certification",
+                    // contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ))),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: 200,
+            margin: const EdgeInsets.symmetric(horizontal: 29),
+            child: TextField(
+                controller: _textCertChainController,
+                maxLines: null,
+                minLines: null,
+                expands: true,
+                decoration: InputDecoration(
+                    labelText: "certificationChain",
                     // contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -96,12 +141,12 @@ class _SettingPageState extends State<SettingPage> {
               height: 200,
               margin: const EdgeInsets.symmetric(horizontal: 29),
               child: TextField(
-                  controller: _textPublicKeyController,
+                  controller: _textPrivateKeyController,
                   maxLines: null,
                   minLines: null,
                   expands: true,
                   decoration: InputDecoration(
-                      labelText: "pubKey",
+                      labelText: "privateKey",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       )))),
