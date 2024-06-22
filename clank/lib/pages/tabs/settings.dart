@@ -71,22 +71,22 @@ class _SettingPageState extends State<SettingPage> {
     return SingleChildScrollView(
         padding: const EdgeInsets.only(top: 10.0, bottom: 50),
         child: Column(children: [
-          const SizedBox(height: 10),
-          Container(
-            height: 55,
-            margin: const EdgeInsets.symmetric(horizontal: 29),
-            child: TextField(
-                controller: _textIOTApiURLController,
-                maxLines: null,
-                minLines: null,
-                expands: true,
-                decoration: InputDecoration(
-                    labelText: "IOT Endpoint",
-                    // contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ))),
-          ),
+          // const SizedBox(height: 10),
+          // Container(
+          //   height: 55,
+          //   margin: const EdgeInsets.symmetric(horizontal: 29),
+          //   child: TextField(
+          //       controller: _textIOTApiURLController,
+          //       maxLines: null,
+          //       minLines: null,
+          //       expands: true,
+          //       decoration: InputDecoration(
+          //           labelText: "IOT Endpoint",
+          //           // contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
+          //           border: OutlineInputBorder(
+          //             borderRadius: BorderRadius.circular(10),
+          //           ))),
+          // ),
           const SizedBox(height: 10),
           Container(
             height: 55,
