@@ -4,12 +4,16 @@
 
 ![design](/asset/design.png)
 
+一共分为三个服务，
+* clank 用fluuter 写的客户端，用于远程操作
+* rotot-srv运行在macbook上，用于解锁屏幕
+* py-robot运行在ESP32上进行消息监听和发送指令
 
 ## `mac`端服务`robot-srv`
 `robot-srv`一个很小的服务，跑在`mac`上，用于在锁屏状态下，输入密码,暴露出两个接口
 * `/screen/pwd`用于保存密码，会把原密码进行加密后保存，所以不用担心安全问题
 * `/unlock`是用于在锁屏状态下，输入密码进行登录的接口
-* 
+ 
 ![design](/asset/robot-srv.png)
 
 
