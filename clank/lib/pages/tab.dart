@@ -49,10 +49,7 @@ class _TabState extends State<Tab> {
           child: const Icon(Icons.adb),
           onPressed: () async {
             print("WOL");
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            var apiUrl = prefs.getString('awsApiURL') ??
-                'https://a244sdkbxgj2hu.ats.iot.cn-north-1.amazonaws.com.cn:8443';
-            sendMsg(apiUrl, IotTopic.scanBleTopic, {"name": "tom"}, "", "", "");
+            sendMsg(IotTopic.scanBleTopic, {"bluetooth": "scan"});
           },
         ),
       ),

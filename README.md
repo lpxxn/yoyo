@@ -16,11 +16,11 @@
 ![design](/asset/esp32.png)
 
 
-## Android客户端
-客户端用于发送`IOT MQTT`消息，先设置好`AWS ITO`需要的证书和密钥
+## `Clank`客户端
+`Clank`是用`flutter`写的一个客户端，可以跑的`android`,`mac`,`ios`等平台上，用于发送`IOT MQTT`消息，先设置好`AWS ITO`需要的证书和密钥
 ![design](/asset/settings.png)
 
 
-主页可以进行消息的发送，`WOL`用于发送`Wake-on-LAN`消息
+主页可以进行消息的发送，`WOL`用于发送`Wake-on-LAN`或者解锁屏幕消息
 
 ![design](/asset/home.png)

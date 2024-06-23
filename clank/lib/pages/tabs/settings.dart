@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'ito.dart';
 // Future<void> saveName() async {
 //   SharedPreferences prefs = await SharedPreferences.getInstance();
 //   await prefs.setString('name', 'John Doe');
@@ -10,12 +10,6 @@ Future<String?> getName(key) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString(key);
 }
-
-const screenServerAPIURL = 'screenApiURL';
-const awsAPIURL = 'awsApiURL';
-const certificateKeyName = "certificate";
-const certChainKeyName = 'certChainKey';
-const privateKeyName = 'privateKey';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
