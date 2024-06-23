@@ -3,6 +3,10 @@ import time
 import ujson
 from umqtt.simple import MQTTClient
 from stop_ble2 import BLE
+from lib import wol_op
+from lib import storage
+from lib import wifi_op
+import urequests
 
 aws_endpoint = b'a244sdkbxgj2hu.iot.cn-north-1.amazonaws.com.cn'
 client_id = "012b23ad-ad20-45d4-bce3-6af82683fd92"
@@ -24,6 +28,8 @@ ssl_params = {"key": key, "cert": cert}
 print("topic_pub: ", shadow_topic_pub)
 # ble_topic_sub = f"testDeviceType/${client_id}/scanBle"
 ble_topic_sub = f"testDeviceType/msg/scanBle"
+wol_topic_sub = f"testDeviceType/msg/scanBle"
+unlock_topic_sub = f"testDeviceType/msg/unlockScreen"
 
 def mqtt_connect(client=client_id, endpoint=aws_endpoint, sslp=ssl_params):
     mqtt = MQTTClient(client_id=client, server=endpoint, port=8883, keepalive=1200, ssl=True, ssl_params=sslp)
@@ -33,6 +39,8 @@ def mqtt_connect(client=client_id, endpoint=aws_endpoint, sslp=ssl_params):
     mqtt.set_callback(mqtt_subscribe)
     mqtt.subscribe(shadow_topic_sub)
     mqtt.subscribe(ble_topic_sub)
+    mqtt.subscribe(wol_topic_sub)
+    mqtt.subscribe(unlock_topic_sub)
     # Publish a test MQTT message.
     # mqtt.publish(topic=topic_pub, msg='hello world', qos=0)
     mesg = ujson.dumps({
@@ -63,6 +71,11 @@ def mqtt_subscribe(topic, msg):
         print("ble topic")
         ble = BLE()
         ble.start_advertising()
+    elif topic == wol_topic_sub:
+        wol = wol_op.WOL(wifi_op.IP, storage.get('MAC'))
+        wol.do()
+    elif topic ==unlock_topic_sub:
+        urequests.get("http://192.168.10.40:9087/ping", timeout=3)
 
 
     # if 'state' not in message:

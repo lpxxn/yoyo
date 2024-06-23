@@ -3,7 +3,7 @@ servers:
   - url: "http://localhost:9087"
 info:
   version: 1.0.0
-  title: Minimal ping API server
+  title: Robot-srv
 paths:
   /screen/pwd:
     summary: save screen password for unlock the computer screen
